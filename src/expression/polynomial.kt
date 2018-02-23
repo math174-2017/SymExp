@@ -1,0 +1,69 @@
+package expression
+
+import kotlin.math.pow
+
+/**
+ * a polynomial is the largest unit that composes an Expression.
+ * it stores a Term and a list of coefficients. if a coefficient
+ * is stored at an index of 0 it is the coefficient for the Term
+ * to the power of 1, so if it were stored at an index of 1 it
+ * would be the coefficient of the Term to the power of 2 and so
+ * on.
+ */
+class Polynomial(vararg symbols: Symbol) {
+    val term: Term = Term(*symbols)
+    private var coefficients = mutableListOf<Double>()
+
+    /**
+     * represents an instance of Polynomial as a human readable String
+     */
+    override fun toString(): String = terms().joinToString(" + ").replace("+ -", "- ")
+
+    /**
+     * evaluates a polynomial for [values]. for example
+     * if [values] is 'x' to 1 and 'y' to 2 it would
+     * evaluate the term as if x = 1 and y = 2
+     */
+    fun eval(values: Map<Char, Double>): Double = (0..(coefficients.size - 1)).sumByDouble { coefficients[it] * term.eval(values).pow(it + 1) }
+
+    /**
+     * it increments a value the coefficient by [value]
+     * at the index [power] - 1, while filling empty
+     * indexes with 0s.
+     */
+    fun add(value: Number, power: Int) {
+        while (coefficients.size < power) coefficients.add(0.0)
+        coefficients[power - 1] += value.toDouble()
+    }
+
+    /**
+     * breaks the coefficients list down to a list of human readable Strings for each term of the polynomial.
+     */
+    fun terms(): List<String> {
+        val text = mutableListOf<String?>()
+        ((coefficients.size - 1) downTo 0).forEach {
+            text.add(multiple(it, "$term${exponent(it)}"))
+        }
+        return text.filterNotNull()
+    }
+
+    /**
+     * handles the logic for representing a term being multiplied by a coefficient
+     */
+    private fun multiple(num: Int, term: String): String? {
+        return when (coefficients[num]) {
+            0.0 -> null
+            1.0 -> term
+            -1.0 -> "-$term"
+            coefficients[num].toInt().toDouble() ->  "${coefficients[num].toInt()}$term"
+            else -> "${coefficients[num]}$term"
+        }
+    }
+
+    /**
+     * handles the logic for representing a term being raised to a power
+     */
+    private fun exponent(num: Int): String {
+        return if (num != 0) (num + 1).sup() else ""
+    }
+}
