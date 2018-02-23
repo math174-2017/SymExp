@@ -1,5 +1,6 @@
-package expression
+package polynomial
 
+import text_util.sup
 import kotlin.math.pow
 
 /**

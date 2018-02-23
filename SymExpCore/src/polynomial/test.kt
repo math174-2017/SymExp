@@ -1,4 +1,4 @@
-package expression
+package polynomial
 
 fun main(args: Array<String>) {
     val expr = Polynomial(Symbol('x'), Symbol('y', 2))

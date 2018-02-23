@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/SymCalculus/SymCalculus.iml" filepath="$PROJECT_DIR$/SymCalculus/SymCalculus.iml" />
       <module fileurl="file://$PROJECT_DIR$/SymExp.iml" filepath="$PROJECT_DIR$/SymExp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SymExpCore/SymExpCore.iml" filepath="$PROJECT_DIR$/SymExpCore/SymExpCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SymVector/SymVector.iml" filepath="$PROJECT_DIR$/SymVector/SymVector.iml" />
     </modules>
   </component>
 </project>
