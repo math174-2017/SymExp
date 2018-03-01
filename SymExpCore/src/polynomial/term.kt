@@ -32,7 +32,7 @@ class Term(vararg terms: Symbol) {
      */
     fun eval(values: Map<Char, Double>): Double {
         var product = 1.0
-        for (it in termMap.keys){
+        for (it in termMap.keys) {
             product *= values[it]!!.pow(termMap[it]!!)
         }
         return product
