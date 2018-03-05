@@ -10,22 +10,24 @@ import kotlin.math.pow
  * x and y^2 it would represent x*y^2
  */
 class Term(vararg terms: Symbol) {
-    private val termMap: Map<Char, Int> = run {
+    private var termMap: Map<Char, Int> = mapOf()
+
+    init {
         val names = terms.map { it.name }
         val combinedTerms = mutableListOf<Symbol>()
+        val sortedTerms = terms.sortedBy {it.name}
         for (name in names.distinct()) {
-            combinedTerms.add(Symbol(name, terms.sumBy {
-                if (it.name == name) {
-                    it.power
-                } else {
-                    0
-                }
-            }))
+            var sum = 0
+            var idx: Int = sortedTerms.indexOf(sortedTerms.find {it.name == name})
+            while ( idx < sortedTerms.count() && sortedTerms[idx].name == name) {
+                sum += sortedTerms[idx].power
+                ++idx
+            }
+            combinedTerms.add(Symbol(name, sum))
         }
-        combinedTerms
-    }.map {
-        it.name to it.power
-    }.toMap()
+        termMap = combinedTerms.map { it.name to it.power }.toMap()
+    }
+
 
     /**
      * represents an instance of Term as a human readable String
