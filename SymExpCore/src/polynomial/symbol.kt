@@ -9,8 +9,6 @@ import kotlin.math.pow
  * and the exponent the symbol is raised by
  */
 class Symbol(val name: Char, val power: Int = 1) {
-    val self = name to power
-
     /**
      * returns the value of the symbol when it is evaluated for a Double [num]
      */

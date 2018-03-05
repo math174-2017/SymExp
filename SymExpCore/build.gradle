@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.21'
+    ext.kotlin_version = '1.2.30'
     ext.dokka_version = '0.9.16'
 
     repositories {
@@ -21,6 +21,7 @@ apply plugin: 'org.jetbrains.dokka'
 repositories {
     mavenCentral()
     maven { url "http://dl.bintray.com/jetbrains/spek" }
+    jcenter()
 }
 
 dependencies {
@@ -35,6 +36,7 @@ dependencies {
         exclude group: 'org.junit.platform'
         exclude group: 'org.jetbrains.kotlin'
     }
+    testImplementation 'org.amshove.kluent:kluent:1.4'
 }
 
 sourceSets {

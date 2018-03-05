@@ -10,7 +10,22 @@ import kotlin.math.pow
  * x and y^2 it would represent x*y^2
  */
 class Term(vararg terms: Symbol) {
-    private val termMap: Map<Char, Int> = terms.map { it.self }.toMap()
+    private val termMap: Map<Char, Int> = run {
+        val names = terms.map { it.name }
+        val combinedTerms = mutableListOf<Symbol>()
+        for (name in names.distinct()) {
+            combinedTerms.add(Symbol(name, terms.sumBy {
+                if (it.name == name) {
+                    it.power
+                } else {
+                    0
+                }
+            }))
+        }
+        combinedTerms
+    }.map {
+        it.name to it.power
+    }.toMap()
 
     /**
      * represents an instance of Term as a human readable String
@@ -30,13 +45,16 @@ class Term(vararg terms: Symbol) {
      * is 'x' to 1 and 'y' to 2 it would evaluate the term
      * as if x = 1 and y = 2
      */
-    fun eval(values: Map<Char, Double>): Double {
+    fun eval(values: Map<Char, Number>): Double {
         var product = 1.0
         for (it in termMap.keys) {
-            product *= values[it]!!.pow(termMap[it]!!)
+            product *= values[it]!!.toDouble().pow(termMap[it]!!)
         }
         return product
     }
+
+    fun symbols(): Array<Symbol> = termMap.keys.map {Symbol(it, termMap[it]!!)}.toTypedArray()
+
 
     /**
      * given a Char [key] it returns it's symbols

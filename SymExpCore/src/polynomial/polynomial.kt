@@ -11,8 +11,7 @@ import kotlin.math.pow
  * would be the coefficient of the Term to the power of 2 and so
  * on.
  */
-class Polynomial(vararg symbols: Symbol) {
-    val term: Term = Term(*symbols)
+class Polynomial(private var term: Term) {
     private var coefficients = mutableListOf<Double>()
 
     /**
@@ -25,7 +24,12 @@ class Polynomial(vararg symbols: Symbol) {
      * if [values] is 'x' to 1 and 'y' to 2 it would
      * evaluate the term as if x = 1 and y = 2
      */
-    fun eval(values: Map<Char, Double>): Double = (0..(coefficients.size - 1)).sumByDouble { coefficients[it] * term.eval(values).pow(it + 1) }
+    fun eval(vararg values: Pair<Char, Number>): Double {
+        val valueMap = values.toMap()
+        return (0 until coefficients.size).sumByDouble {
+            coefficients[it] * term.eval(valueMap).pow(it + 1)
+        }
+    }
 
     /**
      * it increments a value the coefficient by [value]
@@ -35,6 +39,22 @@ class Polynomial(vararg symbols: Symbol) {
     fun add(value: Number, power: Int) {
         while (coefficients.size < power) coefficients.add(0.0)
         coefficients[power - 1] += value.toDouble()
+    }
+
+    operator fun plusAssign(newTerm: Sym) {
+        val multiple = newTerm.multiple
+        val power = newTerm.power
+        newTerm.reset()
+        while (coefficients.size < power) coefficients.add(0.0)
+        coefficients[power - 1] += multiple
+    }
+
+    operator fun minusAssign(newTerm: Sym) {
+        val multiple = -1 * newTerm.multiple
+        val power = newTerm.power
+        newTerm.reset()
+        while (coefficients.size < power) coefficients.add(0.0)
+        coefficients[power - 1] += multiple
     }
 
     /**
