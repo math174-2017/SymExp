@@ -12,7 +12,10 @@ import kotlin.math.pow
  * on.
  */
 class Polynomial(private var term: Term) {
-    private var coefficients = mutableListOf<Double>()
+    constructor(symbol: Symbol) : this(Term(symbol))
+
+    private var coefficients: MutableList<Double> = mutableListOf()
+    private var ones = 0
 
     /**
      * represents an instance of Polynomial as a human readable String
@@ -26,8 +29,13 @@ class Polynomial(private var term: Term) {
      */
     fun eval(vararg values: Pair<Char, Number>): Double {
         val valueMap = values.toMap()
-        return (0 until coefficients.size).sumByDouble {
-            coefficients[it] * term.eval(valueMap).pow(it + 1)
+        val solve = term.size() - term.similar(valueMap.keys)
+        if (solve > 0) {
+            return 1.0
+        } else {
+            return (0 until coefficients.size).sumByDouble {
+                coefficients[it] * term.eval(valueMap).pow(it + 1)
+            } + ones
         }
     }
 
@@ -65,7 +73,7 @@ class Polynomial(private var term: Term) {
         ((coefficients.size - 1) downTo 0).forEach {
             text.add(multiple(it, "$term${exponent(it)}"))
         }
-        return text.filterNotNull()
+        return text.plus(listOf<String?>(if (ones != 0) "$ones" else null)).filterNotNull()
     }
 
     /**
@@ -86,5 +94,13 @@ class Polynomial(private var term: Term) {
      */
     private fun exponent(num: Int): String {
         return if (num != 0) (num + 1).sup() else ""
+    }
+
+    fun derivative() {
+        for (n in 0 until coefficients.size) {
+            coefficients[n] = (n + 1) * coefficients[n]
+        }
+        ones = coefficients[0].toInt()
+        coefficients.removeAt(0)
     }
 }

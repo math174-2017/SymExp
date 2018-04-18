@@ -19,7 +19,7 @@ class Term(vararg terms: Symbol) {
         for (name in names.distinct()) {
             var sum = 0
             var idx: Int = sortedTerms.indexOf(sortedTerms.find {it.name == name})
-            while ( idx < sortedTerms.count() && sortedTerms[idx].name == name) {
+            while (idx < sortedTerms.count() && sortedTerms[idx].name == name) {
                 sum += sortedTerms[idx].power
                 ++idx
             }
@@ -56,6 +56,11 @@ class Term(vararg terms: Symbol) {
     }
 
     fun symbols(): Array<Symbol> = termMap.keys.map {Symbol(it, termMap[it]!!)}.toTypedArray()
+
+
+    fun size() = termMap.size
+
+    fun similar(sym: Collection<Char>) = sym.sumBy {if (termMap.keys.contains(it)) 1 else 0 }
 
 
     /**
