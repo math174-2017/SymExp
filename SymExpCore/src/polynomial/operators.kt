@@ -27,3 +27,9 @@ object Sym {
         multiple = 1.0
     }
 }
+
+fun MutableList<Double>.pop(): Number {
+    val num = this[0]
+    this.removeAt(0)
+    return num
+}

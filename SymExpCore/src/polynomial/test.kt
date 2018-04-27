@@ -1,10 +1,12 @@
 package polynomial
 
 fun main(args: Array<String>) {
-    val expr = Polynomial(Symbol('x'))
-    expr += Sym.pow(3)
-    expr -= 4 * Sym
-    println("f(x) = $expr")
-    expr.derivative()
-    println("Df = $expr")
+    val expr = Expression()
+    val p = Polynomial(Symbol('x'))
+    p += Sym.pow(3)
+    p -= 4 * Sym
+    expr += p
+    println(expr)
+    assert(expr.derivative())
+    println(expr)
 }

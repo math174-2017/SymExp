@@ -18,4 +18,8 @@ class Symbol(val name: Char, val power: Int = 1) {
      * represents the symbol as a human readable string
      */
     override fun toString(): String = "$name${power.sup()}"
+
+    operator override fun equals(other: Any?): Boolean {
+        return if (other is Symbol) name == other.name && power == other.power else false
+    }
 }

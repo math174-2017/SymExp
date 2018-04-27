@@ -11,11 +11,11 @@ import kotlin.math.pow
  * would be the coefficient of the Term to the power of 2 and so
  * on.
  */
-class Polynomial(private var term: Term) {
+class Polynomial(val term: Term) {
     constructor(symbol: Symbol) : this(Term(symbol))
 
     private var coefficients: MutableList<Double> = mutableListOf()
-    private var ones = 0
+    var ones = 0
 
     /**
      * represents an instance of Polynomial as a human readable String
@@ -73,7 +73,7 @@ class Polynomial(private var term: Term) {
         ((coefficients.size - 1) downTo 0).forEach {
             text.add(multiple(it, "$term${exponent(it)}"))
         }
-        return text.plus(listOf<String?>(if (ones != 0) "$ones" else null)).filterNotNull()
+        return text.plus(listOf<String?>(if (ones != 0) "${ones.toInt()}" else null)).filterNotNull()
     }
 
     /**
@@ -84,7 +84,7 @@ class Polynomial(private var term: Term) {
             0.0 -> null
             1.0 -> term
             -1.0 -> "-$term"
-            coefficients[num].toInt().toDouble() ->  "${coefficients[num].toInt()}$term"
+            coefficients[num].toInt().toDouble() -> "${coefficients[num].toInt()}$term"
             else -> "${coefficients[num]}$term"
         }
     }
@@ -96,11 +96,13 @@ class Polynomial(private var term: Term) {
         return if (num != 0) (num + 1).sup() else ""
     }
 
-    fun derivative() {
-        for (n in 0 until coefficients.size) {
-            coefficients[n] = (n + 1) * coefficients[n]
+    fun derivative(): Boolean {
+        if (term.size() <= 1) {
+            for (n in 0 until coefficients.size) {
+                coefficients[n] = (n + 1) * coefficients[n]
+            }
+            ones = coefficients.pop().toInt()
         }
-        ones = coefficients[0].toInt()
-        coefficients.removeAt(0)
+        return term.size() <= 1
     }
 }
